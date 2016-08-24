@@ -11,7 +11,6 @@ document.addEventListener('DOMSubtreeModified', function(e) {
 function updateStats() {
     var statsFind = new XMLHttpRequest();
     statsFind.onload = function () {
-        console.log("i statsFind");
         var json = JSON.parse(statsFind.responseText);
         var leagues = json.payload.leagues;
 
@@ -31,13 +30,10 @@ function updateStats() {
 
     var userName = document.getElementsByClassName("page-title__content__title__primary page-title__content__title__primary--text-transform-none")[0].textContent;
 
-    console.log("username: " + userName);
-
     var userFind = new XMLHttpRequest();
     userFind.onload = function () {
 
         var json = JSON.parse(userFind.responseText);
-        console.log(json);
         json.payload.forEach(function (user) {
 
             if (user.name = userName) {
@@ -52,7 +48,6 @@ function updateStats() {
 
     var userData = "q=" + userName + "&rows=1&sortBy=nickname&start=0";
     userFind.open('GET', "https://api.faceit.com/search/v1/players?" + userData);
-    console.log('Innan send: ' + "https://api.faceit.com/search/v1/players?" + userData);
     userFind.send();
 
 };
