@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "Faceit - both leauges",
+  "description": "This extension shows both your faceit leauges at your profile",
+  "author": "Sebastian R",
+  "version": "1.0",
+  "content_scripts": [
+    {
+      "run_at": "document_idle",
+      "js": [
+        "showLeague.js"
+      ],
+      "matches": [
+        "https://www.faceit.com/en/players/*",
+        "https://api.faceit.com/api/users/*",
+        "https://api.faceit.com/search/v1/*"
+      ]
+    }
+  ]
+}
