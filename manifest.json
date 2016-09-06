@@ -7,14 +7,14 @@
   "content_scripts": [
     {
       "run_at": "document_idle",
-      "js": [
-        "showLeague.js"
-      ],
-      "matches": [
-        "https://www.faceit.com/en/players/*",
-        "https://api.faceit.com/api/users/*",
-        "https://api.faceit.com/search/v1/*"
-      ]
+      "js": ["js/showLeague.js"],
+      "matches": ["https://www.faceit.com/en/players/*"]
+    },
+    {
+      "run_at": "document_idle",
+      "js": ["js/lobbyStats.js"],
+      "css": ["css/lobbyStats.css"],
+      "matches": ["https://www.faceit.com/en/csgo/room/*"]
     }
   ]
 }
