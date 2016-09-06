@@ -24,12 +24,12 @@ function drawUserStats(userId) {
 
             var div = document.createElement('div');
             div.innerHTML = '<hr /><table>' +
-                '<tr><td>Member since</td><td>' + createdAt.getDate() + '/' + (createdAt.getMonth()+1) + ' ' + createdAt.getFullYear() + '</td></tr>' +
-                    '<tr><td>Matches Played</td><td>' + matchesPlayed + '</td></tr>' +
-                    '<tr><td>Win rate</td><td>' + winRate + '</td></tr>' +
-                    '<tr><td>HS %</td><td>' + headshotPercentage + '</td></tr>' +
-                    '<tr><td>KDR</td><td>' + kdr + '</td></tr>' +
-                    '</table>';
+                '<tr><td>Member since</td><td>' + createdAt.getDate() + '/' + (createdAt.getMonth() + 1) + ' ' + createdAt.getFullYear() + '</td></tr>' +
+                '<tr><td>Matches Played</td><td>' + matchesPlayed + '</td></tr>' +
+                '<tr><td>Win rate</td><td id="LST-WR-' + nick +'">' + winRate + '</td></tr>' +
+                '<tr><td>HS %</td><td id="LST-HS-' + nick +'">' + headshotPercentage + '</td></tr>' +
+                '<tr><td>KDR</td><td id="LST-KDR-' + nick +'">' + kdr + '</td></tr>' +
+                '</table>';
             div.className = "lobbyStats";
 
             var playerHTMLList = document.getElementsByClassName("match-team-member match-team-member--team");
@@ -38,6 +38,35 @@ function drawUserStats(userId) {
                     playerHTML.appendChild(div);
                 }
             });
+
+            var userHistory = new XMLHttpRequest();
+            userHistory.onload = function () {
+
+                var recentGames = JSON.parse(userHistory.responseText);
+                var recentWins = 0;
+                var recentKills = 0;
+                var recentDeaths = 0;
+                var recentHeadshots = 0;
+
+                for (var i = 0; i < recentGames.length; i++) {
+                    recentWins += parseInt(recentGames[i].i10, 10);
+                    recentKills += parseInt(recentGames[i].i6, 10);
+                    recentDeaths += parseInt(recentGames[i].i8, 10);
+                    recentHeadshots += parseInt(recentGames[i].i13, 10);
+                }
+
+                var recentWinRate = (recentWins / recentGames.length)*100;
+                var recentKDR = recentKills / recentDeaths;
+                var recentHeadshotPercentage = (recentHeadshots / recentKills)*100;
+
+                document.getElementById("LST-WR-" + nick).textContent += ' (' + recentWinRate.toFixed(0) + ')';
+                document.getElementById("LST-HS-" + nick).textContent += ' (' + recentHeadshotPercentage.toFixed(0) + ')';
+                document.getElementById("LST-KDR-" + nick).textContent += ' (' + recentKDR.toFixed(2) + ')';
+
+            };
+
+            userHistory.open('GET', "https://api.faceit.com/stats/api/v1/stats/time/users/" + userId + "/games/csgo?page=0&size=30");
+            userHistory.send();
 
         };
 
