@@ -1,0 +1,13 @@
+.lobbyStats table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.lobbyStats th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+.lobbyStats tr:nth-child(even) {
+    background-color: #f2f2f2
+}
