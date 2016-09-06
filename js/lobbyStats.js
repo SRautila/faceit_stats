@@ -98,17 +98,6 @@ function drawLobbyStats() {
     var matchID = window.location.pathname.split("/").pop();
     matchData.open('GET', "https://api.faceit.com/stats/api/v1/stats/matches/" + matchID);
     matchData.send();
-}
-
-var draw = function () {
-
-    var elem = document.getElementsByClassName("stat__detail__value")[3];
-    if (typeof elem !== 'undefined') {
-        if (elem.textContent.length > 0) {
-            updateStats();
-            document.removeEventListener('DOMSubtreeModified', draw, false);
-        }
-    }
 };
 
 document.addEventListener('DOMSubtreeModified', draw, false);
@@ -125,5 +114,3 @@ var draw = function () {
 };
 
 document.addEventListener('DOMSubtreeModified', draw, false);
-
-
