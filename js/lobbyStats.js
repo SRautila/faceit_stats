@@ -11,6 +11,7 @@ function drawUserStats(userId) {
 
         var createdAt = new Date(info.created_at);
         var nick = info.nickname;
+        var elo = info.games.csgo.faceit_elo;
 
         var userStats = new XMLHttpRequest();
         userStats.onload = function () {
@@ -26,9 +27,10 @@ function drawUserStats(userId) {
             div.innerHTML = '<hr /><table>' +
                 '<tr><td>Member since</td><td>' + createdAt.getDate() + '/' + (createdAt.getMonth() + 1) + ' ' + createdAt.getFullYear() + '</td></tr>' +
                 '<tr><td>Matches Played</td><td>' + matchesPlayed + '</td></tr>' +
-                '<tr><td>Win rate</td><td id="LST-WR-' + nick +'">' + winRate + '</td></tr>' +
-                '<tr><td>HS %</td><td id="LST-HS-' + nick +'">' + headshotPercentage + '</td></tr>' +
-                '<tr><td>KDR</td><td id="LST-KDR-' + nick +'">' + kdr + '</td></tr>' +
+                '<tr><td>ELO</td><td>' + elo +'</td></tr>' +
+                '<tr><td>Win rate</td><td id="LST-WR-' + nick + '">' + winRate + '</td></tr>' +
+                '<tr><td>HS %</td><td id="LST-HS-' + nick + '">' + headshotPercentage + '</td></tr>' +
+                '<tr><td>KDR</td><td id="LST-KDR-' + nick + '">' + kdr + '</td></tr>' +
                 '</table>';
             div.className = "lobbyStats";
 
@@ -55,9 +57,9 @@ function drawUserStats(userId) {
                     recentHeadshots += parseInt(recentGames[i].i13, 10);
                 }
 
-                var recentWinRate = (recentWins / recentGames.length)*100;
+                var recentWinRate = (recentWins / recentGames.length) * 100;
                 var recentKDR = recentKills / recentDeaths;
-                var recentHeadshotPercentage = (recentHeadshots / recentKills)*100;
+                var recentHeadshotPercentage = (recentHeadshots / recentKills) * 100;
 
                 document.getElementById("LST-WR-" + nick).textContent += ' (' + recentWinRate.toFixed(0) + ')';
                 document.getElementById("LST-HS-" + nick).textContent += ' (' + recentHeadshotPercentage.toFixed(0) + ')';

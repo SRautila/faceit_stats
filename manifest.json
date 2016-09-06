@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "Faceit - both leauges",
-  "description": "This extension shows both your faceit leauges at your profile",
+  "name": "Faceit - stats",
+  "description": "This extension adds a stats table to game lobbies and shows both your faceit leauges at your profile",
   "author": "Sebastian R",
-  "version": "1.0",
+  "version": "1.1",
   "content_scripts": [
     {
       "run_at": "document_idle",
