@@ -2,15 +2,17 @@
  * Created by Sebastian on 2016-08-24.
  */
 
-document.addEventListener('DOMSubtreeModified', function(e) {
+document.addEventListener('DOMSubtreeModified', function() {
     if(document.getElementsByClassName("page-title__content__title__primary page-title__content__title__primary--text-transform-none")[0].textContent.length > 0){
         updateStats()
     }
 });
 
 function updateStats() {
+
     var statsFind = new XMLHttpRequest();
     statsFind.onload = function () {
+
         var json = JSON.parse(statsFind.responseText);
         var leagues = json.payload.leagues;
 
@@ -28,8 +30,6 @@ function updateStats() {
 
     };
 
-    var userName = document.getElementsByClassName("page-title__content__title__primary page-title__content__title__primary--text-transform-none")[0].textContent;
-
     var userFind = new XMLHttpRequest();
     userFind.onload = function () {
 
@@ -40,14 +40,13 @@ function updateStats() {
                 var statsData = user.guid + "/games/csgo/league?region=EU";
                 statsFind.open('GET', "https://api.faceit.com/api/users/" + statsData);
                 statsFind.send();
-
-
             }
         });
     };
 
+    var userName = document.getElementsByClassName("page-title__content__title__primary page-title__content__title__primary--text-transform-none")[0].textContent;
     var userData = "q=" + userName + "&rows=1&sortBy=nickname&start=0";
     userFind.open('GET', "https://api.faceit.com/search/v1/players?" + userData);
     userFind.send();
 
-};
+}
