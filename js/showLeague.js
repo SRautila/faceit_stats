@@ -14,13 +14,12 @@ function updateStats() {
         var rankOut = leagues[0].ladder.user_rank.rank + " / " + leagues[1].ladder.user_rank.rank;
         var pointsOut = leagues[0].ladder.user_rank.points + " / " + leagues[1].ladder.user_rank.points;
 
-        var leaugeField = document.getElementsByClassName("stat__detail__value")[3].getElementsByTagName("span")[0];
-        var rankField = document.getElementsByClassName("stat__detail__value")[4].getElementsByTagName("span")[0];
-        var pointsField = document.getElementsByClassName("stat__detail__value")[5].getElementsByTagName("span")[0];
-
-        leaugeField.innerHTML = leagueOut;
-        rankField.innerHTML = rankOut;
-        pointsField.innerHTML = pointsOut;
+        var leaugeRow = document.getElementsByClassName("game-card__row")[1];
+        leaugeRow.innerHTML = '<div class="league-cta league-cta--card row"> ' +
+            '<div class="col-sm-4">  <div class="stat"> <div class="stat__detail"> <div class="stat__detail__value"> <!----><span>' + leagueOut + '</span><!----> <!----> </div> <div class="stat__detail__label">League</div> </div> </div> </div> ' +
+            '<div class="col-sm-4"> <div class="stat"> <div class="stat__detail"> <div class="stat__detail__value"> <!----><span>' + rankOut + '</span><!----> <!----> </div> <div class="stat__detail__label">League Rank</div> </div> </div> </div> ' +
+            '<div class="col-sm-4"> <div class="stat"> <div class="stat__detail"> <div class="stat__detail__value"> <!----><span>' + pointsOut + '</span><!----> <!----> </div> <div class="stat__detail__label">League points</div> </div> </div> </div> ' +
+            '</div>';
 
     };
 
@@ -47,11 +46,15 @@ function updateStats() {
 
 var draw = function () {
 
-    var elem = document.getElementsByClassName("stat__detail__value")[3];
+    var elem = document.getElementsByClassName("game-card game-card--featured")[0];
     if (typeof elem !== 'undefined') {
-        if (elem.textContent.length > 0) {
+                var leagueDrawnTag = document.getElementById("FS-league-drawn");
+        if (!leagueDrawnTag) {
+            leagueDrawnTag = document.createElement('div');
+            leagueDrawnTag.id = "FS-league-drawn";
+            elem.appendChild(leagueDrawnTag);
+            console.log('drawleague called');
             updateStats();
-            document.removeEventListener('DOMSubtreeModified', draw, false);
         }
     }
 };

@@ -8,13 +8,13 @@
     {
       "run_at": "document_idle",
       "js": ["js/showLeague.js"],
-      "matches": ["https://www.faceit.com/en/players/*"]
+      "matches": ["https://www.faceit.com/*"]
     },
     {
       "run_at": "document_idle",
       "js": ["js/lobbyStats.js"],
       "css": ["css/lobbyStats.css"],
-      "matches": ["https://www.faceit.com/en/csgo/room/*"]
+      "matches": ["https://www.faceit.com/*"]
     }
   ]
 }

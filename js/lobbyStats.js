@@ -28,9 +28,9 @@ function drawUserStats(userId) {
                 '<tr><td>Member since</td><td>' + createdAt.getDate() + '/' + (createdAt.getMonth() + 1) + ' ' + createdAt.getFullYear() + '</td></tr>' +
                 '<tr><td>Matches Played</td><td>' + matchesPlayed + '</td></tr>' +
                 '<tr><td>ELO</td><td>' + elo +'</td></tr>' +
-                '<tr><td>Win rate</td><td id="LST-WR-' + nick + '">' + winRate + '</td></tr>' +
-                '<tr><td>HS %</td><td id="LST-HS-' + nick + '">' + headshotPercentage + '</td></tr>' +
-                '<tr><td>KDR</td><td id="LST-KDR-' + nick + '">' + kdr + '</td></tr>' +
+                '<tr><td>Win rate</td><td id="FS-WR-' + nick + '">' + winRate + '</td></tr>' +
+                '<tr><td>HS %</td><td id="FS-HS-' + nick + '">' + headshotPercentage + '</td></tr>' +
+                '<tr><td>KDR</td><td id="FS-KDR-' + nick + '">' + kdr + '</td></tr>' +
                 '</table>';
             div.className = "lobbyStats";
 
@@ -61,9 +61,9 @@ function drawUserStats(userId) {
                 var recentKDR = recentKills / recentDeaths;
                 var recentHeadshotPercentage = (recentHeadshots / recentKills) * 100;
 
-                document.getElementById("LST-WR-" + nick).textContent += ' (' + recentWinRate.toFixed(0) + ')';
-                document.getElementById("LST-HS-" + nick).textContent += ' (' + recentHeadshotPercentage.toFixed(0) + ')';
-                document.getElementById("LST-KDR-" + nick).textContent += ' (' + recentKDR.toFixed(2) + ')';
+                document.getElementById("FS-WR-" + nick).textContent += ' (' + recentWinRate.toFixed(0) + ')';
+                document.getElementById("FS-HS-" + nick).textContent += ' (' + recentHeadshotPercentage.toFixed(0) + ')';
+                document.getElementById("FS-KDR-" + nick).textContent += ' (' + recentKDR.toFixed(2) + ')';
 
             };
 
@@ -87,30 +87,28 @@ function drawLobbyStats() {
     var matchData = new XMLHttpRequest();
     matchData.onload = function () {
 
-        var json = JSON.parse(matchData.responseText);
-        json[0].teams[0].players.forEach(function (player) {
-            drawUserStats(player.playerId);
-        });
-
-        json[0].teams[1].players.forEach(function (player) {
-            drawUserStats(player.playerId);
+        var json = JSON.parse(matchData.responseText).payload;
+        json.playing_players.forEach(function (player) {
+            drawUserStats(player);
         });
     };
 
     var matchID = window.location.pathname.split("/").pop();
-    matchData.open('GET', "https://api.faceit.com/stats/api/v1/stats/matches/" + matchID);
+    matchData.open('GET', "https://api.faceit.com/api/matches/" + matchID + "?withStats=true");
     matchData.send();
-};
-
-document.addEventListener('DOMSubtreeModified', draw, false);
+}
 
 var draw = function () {
 
     var elem = document.getElementsByClassName("match-team-member__details__name")[4];
     if (typeof elem !== 'undefined') {
-        if (elem.textContent.length > 0) {
+        var statsDrawnTag = document.getElementById("FS-stats-drawn");
+        if (!statsDrawnTag) {
+            statsDrawnTag = document.createElement('div');
+            statsDrawnTag.id = "FS-stats-drawn";
+            elem.appendChild(statsDrawnTag);
+            console.log('drawlobby called');
             drawLobbyStats();
-            document.removeEventListener('DOMSubtreeModified', draw, false);
         }
     }
 };
